@@ -6,7 +6,7 @@ from src.loader import TaskLoader
 from src.sources import ApiTaskSource, FileTaskSource, GeneratorTaskSource
 from src.task import Task
 from src.protocol import TaskSource
-
+from src.logger import setup_logging
 
 cli = typer.Typer(no_args_is_help=True)
 
@@ -76,4 +76,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    setup_logging()
     main()

@@ -1,6 +1,7 @@
 import json
 import random
 from src.task import Task
+import logging
 
 
 class FileTaskSource:
@@ -16,8 +17,10 @@ class FileTaskSource:
                 data = json.load(f)
             for i in data:
                 tasks.append(Task(id=i["id"], payload=i["payload"]))
+            logging.info(f"Загружено {len(tasks)} задач из файла {self.path}")
             return tasks
         except FileNotFoundError:
+            logging.error(f"ERROR: Файл {self.path} не найден")
             raise FileNotFoundError(f"Файл {self.path} не найден")
 
 
@@ -62,6 +65,7 @@ class GeneratorTaskSource:
                     },
                 )
             )
+        logging.info(f"Сгенерировано {len(tasks)} задач с seed={self._random.seed}")
         return tasks
 
 
@@ -77,4 +81,5 @@ class ApiTaskSource:
         tasks = []
         for i in self._api_data:
             tasks.append(Task(id=i["id"], payload=i["payload"]))
+        logging.info(f"Загружено {len(tasks)} задач из API-заглушки")
         return tasks

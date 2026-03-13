@@ -1,5 +1,6 @@
 from src.protocol import TaskSource
 from src.task import Task
+import logging
 
 
 class TaskLoader:
@@ -15,7 +16,9 @@ class TaskLoader:
         self.sources.append(source)
 
     def load_tasks(self) -> list[Task]:
+        logging.info(f"Загрузка задач из {len(self.sources)} источников")
         tasks: list[Task] = []
         for source in self.sources:
             tasks.extend(source.get_tasks())
+        logging.info(f"Загружено {len(tasks)} задач из {len(self.sources)} источников")
         return tasks
