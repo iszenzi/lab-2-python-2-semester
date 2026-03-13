@@ -1,17 +1,13 @@
-"""
-Модуль загрузки задач из источников
-"""
-
-import logging
-
 from src.protocol import TaskSource
 from src.task import Task
+import logging
 
 
 class TaskLoader:
     """
     Загрузчик задач из источников
     """
+
     def __init__(self, sources: list[TaskSource] | None = None):
         """
         Создает загрузчик задач
@@ -28,6 +24,7 @@ class TaskLoader:
         :param source: Источник задач
         """
         if not isinstance(source, TaskSource):
+            logging.error("ERROR: Источник должен соответствовать протоколу TaskSource")
             raise TypeError("Источник должен соответствовать протоколу TaskSource")
         self.sources.append(source)
 

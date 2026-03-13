@@ -1,24 +1,21 @@
-"""
-Модуль источников задач
-"""
-
 import json
-import logging
 import random
-
 from src.task import Task
+import logging
 
 
 class FileTaskSource:
     """
     Источник задач из JSON-файла
     """
+
     def __init__(self, path: str):
         """
         Создает источник задач из файла
         :param path: Путь к JSON-файлу
         """
         if not isinstance(path, str):
+            logging.error("ERROR: Путь к файлу должен быть строкой")
             raise TypeError("Путь к файлу должен быть строкой")
         self.path = path
 
@@ -42,17 +39,22 @@ class FileTaskSource:
 
 class GeneratorTaskSource:
     """
-    Источник задач на основе генератора
+    Источник сгенерированных задач
     """
+
     def __init__(self, count: int = 10, seed: int | None = None):
         """
-        Создает источник задач-генератор
+        Создает источник сгенерированных задач
         :param count: Количество задач
         :param seed: Seed для генератора
         """
         if not isinstance(count, int) or count <= 0:
+            logging.error(
+                "ERROR: Количество задач должно быть целым положительным числом"
+            )
             raise TypeError("Количество задач должно быть целым положительным числом")
         if seed is not None and not isinstance(seed, int):
+            logging.error("ERROR: Seed должен быть целым числом или None")
             raise TypeError("Seed должен быть целым числом или None")
         self.count = count
         self._random = random.Random(seed)
@@ -101,6 +103,7 @@ class ApiTaskSource:
     """
     Источник задач из API-заглушки
     """
+
     def __init__(self):
         """
         Создает API-заглушку с задачами
