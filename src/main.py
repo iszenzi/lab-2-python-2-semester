@@ -1,17 +1,27 @@
+"""
+Модуль CLI для загрузки задач
+"""
+
 from dataclasses import asdict
 import json
-import typer
 from pathlib import Path
+
+import typer
+
 from src.loader import TaskLoader
+from src.logger import setup_logging
+from src.protocol import TaskSource
 from src.sources import ApiTaskSource, FileTaskSource, GeneratorTaskSource
 from src.task import Task
-from src.protocol import TaskSource
-from src.logger import setup_logging
 
 cli = typer.Typer(no_args_is_help=True)
 
 
 def print_tasks(tasks: list[Task]) -> None:
+    """
+    Печатает список задач
+    :param tasks: Список задач
+    """
     for task in tasks:
         print(json.dumps(asdict(task), ensure_ascii=True))
 
@@ -25,6 +35,9 @@ SOURCE_REGISTRY: dict[str, type[TaskSource]] = {
 
 @cli.command("sources")
 def sources_list() -> None:
+    """
+    Печатает доступные источники
+    """
     print("Доступные источники:")
     for source in SOURCE_REGISTRY:
         print(f"- {source}")
@@ -56,6 +69,13 @@ def read(
         help="Читать задачи из API-заглушки",
     ),
 ) -> None:
+    """
+    Загружает задачи и выводит их в консоль
+    :param file: Список файлов с задачами
+    :param generator: Количество задач для генератора
+    :param seed: Seed для генератора
+    :param api: Использовать API-заглушку
+    """
     sources: list[TaskSource] = []
     for path in file:
         sources.append(FileTaskSource(str(path)))
@@ -72,6 +92,9 @@ def read(
 
 
 def main() -> None:
+    """
+    Запускает CLI
+    """
     cli()
 
 

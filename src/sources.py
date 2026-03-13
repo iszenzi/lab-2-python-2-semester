@@ -1,16 +1,32 @@
+"""
+Модуль источников задач
+"""
+
 import json
-import random
-from src.task import Task
 import logging
+import random
+
+from src.task import Task
 
 
 class FileTaskSource:
+    """
+    Источник задач из JSON-файла
+    """
     def __init__(self, path: str):
+        """
+        Создает источник задач из файла
+        :param path: Путь к JSON-файлу
+        """
         if not isinstance(path, str):
             raise TypeError("Путь к файлу должен быть строкой")
         self.path = path
 
     def get_tasks(self) -> list[Task]:
+        """
+        Загружает задачи из файла
+        :return: Список задач
+        """
         try:
             tasks = []
             with open(self.path, "r", encoding="utf-8") as f:
@@ -25,7 +41,15 @@ class FileTaskSource:
 
 
 class GeneratorTaskSource:
+    """
+    Источник задач на основе генератора
+    """
     def __init__(self, count: int = 10, seed: int | None = None):
+        """
+        Создает источник задач-генератор
+        :param count: Количество задач
+        :param seed: Seed для генератора
+        """
         if not isinstance(count, int) or count <= 0:
             raise TypeError("Количество задач должно быть целым положительным числом")
         if seed is not None and not isinstance(seed, int):
@@ -34,6 +58,10 @@ class GeneratorTaskSource:
         self._random = random.Random(seed)
 
     def get_tasks(self) -> list[Task]:
+        """
+        Генерирует задачи
+        :return: Список задач
+        """
         tasks = []
         tasks_type = [
             "process_order",
@@ -70,7 +98,13 @@ class GeneratorTaskSource:
 
 
 class ApiTaskSource:
+    """
+    Источник задач из API-заглушки
+    """
     def __init__(self):
+        """
+        Создает API-заглушку с задачами
+        """
         self._api_data = [
             {"id": 1, "payload": {"type": "process_order", "priority": 3}},
             {"id": 2, "payload": {"type": "send_notification", "priority": 2}},
@@ -78,6 +112,10 @@ class ApiTaskSource:
         ]
 
     def get_tasks(self) -> list[Task]:
+        """
+        Возвращает задачи из API-заглушки
+        :return: Список задач
+        """
         tasks = []
         for i in self._api_data:
             tasks.append(Task(id=i["id"], payload=i["payload"]))
