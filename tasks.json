@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "payload": {
+            "type": "process_order",
+            "sequence": 1,
+            "priority": 2
+        }
+    },
+    {
+        "id": 2,
+        "payload": {
+            "type": "send_notification",
+            "sequence": 2,
+            "priority": 4
+        }
+    },
+    {
+        "id": 3,
+        "payload": {
+            "type": "send_email",
+            "sequence": 3,
+            "priority": 1
+        }
+    },
+    {
+        "id": 4,
+        "payload": {
+            "type": "check_resource",
+            "sequence": 4,
+            "priority": 3
+        }
+    },
+    {
+        "id": 5,
+        "payload": {
+            "type": "update_database",
+            "sequence": 5,
+            "priority": 5
+        }
+    }
+]
