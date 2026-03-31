@@ -26,10 +26,10 @@ class TestFileTaskSource:
 
         assert len(tasks) == 2
         assert tasks[0].payload["type"] == "file_task"
-        assert tasks[0].payload["priority"] == 1
+        assert tasks[0].priority == 3
         assert tasks[0].payload["sequence"] == 1
         assert tasks[1].payload["type"] == "custom"
-        assert tasks[1].payload["priority"] == 1
+        assert tasks[1].priority == 3
         assert tasks[1].payload["sequence"] == 2
 
     def test_missing_file_raises(self):
@@ -143,10 +143,10 @@ class TestTaskLoader:
         assert grouped[1][1][0].payload == {
             "type": "data_processing",
             "sequence": 1,
-            "priority": 2,
         }
+        assert grouped[1][1][0].priority == 2
         assert grouped[1][1][1].payload == {
             "type": "monitoring_task",
             "sequence": 2,
-            "priority": 1,
         }
+        assert grouped[1][1][1].priority == 1
