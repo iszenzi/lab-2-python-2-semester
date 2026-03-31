@@ -1,10 +1,10 @@
 from typing import Any
-from exceptions import InvalidPriorityError
+from src.exceptions import InvalidPriorityError
 
 
 class PriorityDescriptor:
     """
-    Дескриптор данных для валидации приоритета задачи.
+    Дескриптор данных для валидации приоритета задачи
     """
 
     def __init__(self, min_val: int = 1, max_val: int = 5):
@@ -37,7 +37,7 @@ class PriorityDescriptor:
 
 class DefaultDescriptionDescriptor:
     """
-    Non-data дескриптор для описания по умолчанию.
+    Non-data дескриптор для описания по умолчанию
     """
 
     def __init__(self, default_text: str = "Без описания"):

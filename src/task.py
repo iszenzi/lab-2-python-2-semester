@@ -1,8 +1,8 @@
 from typing import Any
 from enum import Enum
 from datetime import datetime
-from exceptions import InvalidStateError
-from descriptors import PriorityDescriptor, DefaultDescriptionDescriptor
+from src.exceptions import InvalidStateError
+from src.descriptors import PriorityDescriptor, DefaultDescriptionDescriptor
 
 
 class TaskStatus(Enum):
@@ -19,7 +19,7 @@ class Task:
     description = DefaultDescriptionDescriptor()
 
     def __init__(
-        self, id: int, payload: Any, priority: int, description: str = ""
+        self, id: int, payload: Any, priority: int = 3, description: str = ""
     ) -> None:
         self._id = id
         self.payload = payload
@@ -60,7 +60,9 @@ class Task:
 
     def fail(self) -> None:
         if self._status not in (TaskStatus.IN_PROGRESS, TaskStatus.NEW):
-            raise InvalidStateError("Завершить можно только начатую задачу")
+            raise InvalidStateError(
+                "Завершить с ошибкой можно только начатую или новую задачу"
+            )
         self._status = TaskStatus.FAILED
 
     def __repr__(self):
