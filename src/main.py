@@ -17,8 +17,14 @@ def print_tasks(tasks: list[Task]) -> None:
     :param tasks: Список задач
     """
     for task in tasks:
-        task_dict = {"id": task.id, "payload": task.payload, "priority": task.priority, "status": task.status.value, "description": task.description}
-        print(json.dumps(task_dict, ensure_ascii=True))
+        task_dict = {
+            "id": task.id,
+            "payload": task.payload,
+            "priority": task.priority,
+            "status": task.status.value,
+            "description": task.description,
+        }
+        print(json.dumps(task_dict, ensure_ascii=False))
 
 
 SOURCE_REGISTRY: dict[str, type[TaskSource]] = {
@@ -101,7 +107,7 @@ def read(
 
 def main() -> None:
     """
-    Запускает CLI
+    Запускает CLI`
     """
     cli()
 

@@ -29,12 +29,23 @@ class FileTaskSource:
             with open(self.path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             for i in data:
-                payload = i["payload"]
+                payload = i.get("payload", {})
+
+                priority = payload.pop("priority", 3)
+                description = payload.pop("description", "Задача из файла")
+
                 if isinstance(payload, dict):
                     payload.setdefault("type", "file_task")
-                    payload.setdefault("priority", 1)
                     payload.setdefault("sequence", i["id"])
-                tasks.append(Task(id=i["id"], payload=payload))
+
+                tasks.append(
+                    Task(
+                        id=i["id"],
+                        payload=payload,
+                        priority=priority,
+                        description=description,
+                    )
+                )
             logging.info(f"Загружено {len(tasks)} задач из файла {self.path}")
             return tasks
         except FileNotFoundError:
@@ -91,14 +102,16 @@ class GeneratorTaskSource:
         ]
         for i in range(self.count):
             task_type = self._random.choice(tasks_type)
+            generated_priority = self._random.randint(1, 5)
             tasks.append(
                 Task(
                     id=i + 1,
                     payload={
                         "type": task_type,
                         "sequence": i + 1,
-                        "priority": self._random.randint(1, 5),
                     },
+                    priority=generated_priority,
+                    description=f"Сгенерированная задача: {task_type}",
                 )
             )
         logging.info(f"Сгенерировано {len(tasks)} задач с seed={self.seed}")
@@ -140,6 +153,16 @@ class ApiTaskSource:
         """
         tasks = []
         for i in self._api_data:
-            tasks.append(Task(id=i["id"], payload=i["payload"]))
+            payload_data = i["payload"].copy()
+            priority = payload_data.pop("priority", 3)
+
+            tasks.append(
+                Task(
+                    id=i["id"],
+                    payload=payload_data,
+                    priority=priority,
+                    description="Задача из API",
+                )
+            )
         logging.info(f"Загружено {len(tasks)} задач из API-заглушки")
         return tasks
