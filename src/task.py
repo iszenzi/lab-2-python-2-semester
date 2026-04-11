@@ -32,7 +32,7 @@ class Task:
         :param priority: Приоритет задачи
         :param description: Описание задачи
         """
-        self._id = id
+        self.id = id
         self.payload = payload
         self.priority = priority
         self._status = TaskStatus.NEW
@@ -48,6 +48,17 @@ class Task:
         :return: Идентификатор задачи
         """
         return self._id
+
+    @id.setter
+    def id(self, value: int) -> None:
+        """
+        Устанавливает идентификатор задачи
+        :param value: Идентификатор задачи
+        """
+        # Если имелось в виду строго больше 0 (то есть 1, 2, 3...)
+        if value <= 0:
+            raise ValueError("Идентификатор задачи должен быть строго больше 0")
+        self._id = value
 
     @property
     def created_at(self) -> datetime:
